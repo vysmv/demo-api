@@ -1,0 +1,37 @@
+services:
+  demo-api:
+    build:
+      context: .
+      dockerfile: docker/go/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - demo-api-db-pg
+      - demo-api-redis
+
+  demo-api-db-pg:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: demo_api
+      POSTGRES_USER: vysmv
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  demo-api-redis:
+    image: redis:8
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres_data:
+  redis_data:

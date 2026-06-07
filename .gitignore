@@ -1,0 +1,9 @@
+.env
+
+.vscode
+
+bin/
+
+docker/go/log
+
+notice/
